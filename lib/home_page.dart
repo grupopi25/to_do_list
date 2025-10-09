@@ -40,6 +40,7 @@ class _HomePageState extends State<HomePage> {
                   if (value == null || value.isEmpty) {
                     return 'Informe uma Tarefa';
                   }
+                  return null;
                 },
                 decoration: InputDecoration(
                   labelText: 'Adicionar uma Tarefa',
