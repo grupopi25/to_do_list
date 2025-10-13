@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -11,7 +14,28 @@ class _HomePageState extends State<HomePage> {
   final TextEditingController _controller = TextEditingController();
   final List<String> _listaTarefa = [];
   final _formKey = GlobalKey<FormState>();
-  bool isChecked = false;
+  bool isChecked = true;
+  void salvar() async {
+    SharedPreferences prefs =
+        SharedPreferences.getInstance() as SharedPreferences;
+    String tarefaSalvas = json.encode(_listaTarefa);
+    await prefs.setString('tarefas', tarefaSalvas);
+  }
+
+  void removeTarefa(int index) {
+    _listaTarefa.removeAt(index);
+    salvar();
+  }
+
+  void addTarefas() {
+    _listaTarefa.add(_controller.text);
+    salvar();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   void dispose() {
@@ -72,7 +96,7 @@ class _HomePageState extends State<HomePage> {
               onTap: () {
                 if (_formKey.currentState!.validate()) {
                   setState(() {
-                    _listaTarefa.add(_controller.text);
+                    addTarefas();
                     _controller.clear();
                   });
                 }
@@ -103,19 +127,12 @@ class _HomePageState extends State<HomePage> {
                   trailing: IconButton(
                     onPressed: () {
                       setState(() {
-                        _listaTarefa.removeAt(index);
+                        removeTarefa(index);
                       });
                     },
                     icon: Icon(Icons.delete, color: Colors.lightBlue),
                   ),
-                  leading: Checkbox(
-                    value: isChecked,
-                    onChanged: (bool? value) {
-                      setState(() {
-                        isChecked = value!;
-                      });
-                    },
-                  ),
+                  leading: Icon(Icons.check),
                 );
               },
             ),
@@ -125,3 +142,11 @@ class _HomePageState extends State<HomePage> {
     );
   }
 }
+// Checkbox(
+// value: isChecked,
+// onChanged: (bool? value) {
+//   setState(() {
+//     isChecked = value!;
+//   });
+// },
+// ),
