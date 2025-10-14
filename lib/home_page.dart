@@ -16,8 +16,7 @@ class _HomePageState extends State<HomePage> {
   final _formKey = GlobalKey<FormState>();
   bool isChecked = true;
   void salvar() async {
-    SharedPreferences prefs =
-        SharedPreferences.getInstance() as SharedPreferences;
+    SharedPreferences prefs = await SharedPreferences.getInstance();
     String tarefaSalvas = json.encode(_listaTarefa);
     await prefs.setString('tarefas', tarefaSalvas);
   }
@@ -32,8 +31,20 @@ class _HomePageState extends State<HomePage> {
     salvar();
   }
 
+  void carrgarTarefas() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? tarefaJson = prefs.getString('tarefas');
+    if (tarefaJson != null && tarefaJson.isEmpty) {
+      List<dynamic> listaTarefa = json.decode(tarefaJson);
+      setState(() {
+        _listaTarefa.addAll(listaTarefa.map((e) => e.toString()).toList());
+      });
+    }
+  }
+
   @override
   void initState() {
+    salvar();
     super.initState();
   }
 
