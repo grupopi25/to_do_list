@@ -15,6 +15,8 @@ class _HomePageState extends State<HomePage> {
   final List<String> _listaTarefa = [];
   final _formKey = GlobalKey<FormState>();
   bool isChecked = true;
+
+  Color dark = Colors.black;
   void salvar() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String tarefaSalvas = json.encode(_listaTarefa);
@@ -57,7 +59,20 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: dark,
       appBar: AppBar(
+        actions: [
+          IconButton(
+            onPressed: () {
+              setState(() {
+                if (dark == Colors.white) {
+                  return Colors.black;
+                }
+              });
+            },
+            icon: Icon(Icons.nightlight),
+          ),
+        ],
         backgroundColor: Colors.blue,
         iconTheme: IconThemeData(color: Colors.white),
         centerTitle: true,
@@ -153,11 +168,3 @@ class _HomePageState extends State<HomePage> {
     );
   }
 }
-// Checkbox(
-// value: isChecked,
-// onChanged: (bool? value) {
-//   setState(() {
-//     isChecked = value!;
-//   });
-// },
-// ),
