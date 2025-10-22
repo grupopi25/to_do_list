@@ -4,7 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+  final VoidCallback onToggleChanger;
+  final bool isDarkMode;
+
+  const HomePage({
+    super.key,
+    required this.onToggleChanger,
+    required this.isDarkMode,
+  });
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -16,7 +23,6 @@ class _HomePageState extends State<HomePage> {
   final _formKey = GlobalKey<FormState>();
   bool isChecked = true;
 
-  Color dark = Colors.black;
   void salvar() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String tarefaSalvas = json.encode(_listaTarefa);
@@ -59,16 +65,11 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: dark,
       appBar: AppBar(
         actions: [
           IconButton(
             onPressed: () {
-              setState(() {
-                if (dark == Colors.white) {
-                  return Colors.black;
-                }
-              });
+              setState(() {});
             },
             icon: Icon(Icons.nightlight),
           ),

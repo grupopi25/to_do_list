@@ -9,12 +9,22 @@ class AppWidget extends StatefulWidget {
 }
 
 class _AppWidgetState extends State<AppWidget> {
+  bool temaAtual = true;
+
+  final light = ThemeData.light();
+  final dark = ThemeData.dark();
+  toggleMode() {
+    setState(() {
+      temaAtual ? light : dark;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      darkTheme: ThemeData(),
+      theme: temaAtual ? dark : light,
       debugShowCheckedModeBanner: false,
-      home: HomePage(),
+      home: HomePage(onToggleChanger: toggleMode, isDarkMode: temaAtual),
     );
   }
 }
